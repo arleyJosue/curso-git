@@ -1,0 +1,226 @@
+cuando sale la U en un archivo en VSC es de untracked - sin seguimiento
+quiere decir que no se le está dando seguimiento, esto pasa cuando creamos un archivo nuevo
+
+cuando sale la A en un archivo en VSC es de Added - fue añadido al stage
+
+cuando sale la M en un archivo en VSC es de Modified - fue modificado
+
+cuando sale la D en un archivo en VSC es de Deleted - fue eliminado
+
+cuando sale la R en un archivo en VSC es de Renamed - fue renombrado
+
+
+dos guinoes -- es una palabra completa
+un guion - es una abreviatura
+
+q para salir cuando hay :
+
+muestra la versión
+git --versión
+
+muestra ayuda
+git help
+git help 'comando que necesito ayuda' commit, etc
+git --help config  en la web
+
+==============================================================
+CONFIGURACIÓN DE CRLF
+git config core.autocrlf true
+==============================================================
+
+configuración global  -> si no hay mensaje o retroalimentación es por que salió exitoso
+git config --global user.name "Arley Martinez"
+git config --global user.email "arleyjmartinez@gmail.com"
+
+para ver la configuración de usuario      :q!   para salir de configuración del usuario
+tecla a para modificar
+git config --global -e 
+
+para salir de la configuración -> scape una vez dos puntos w de write q de quit ! salir
+scape :wq!
+
+
+crea repositorio local, crea una carpeta .git contiene referencia a todo lo que vamos hacer
+git init
+
+iniciar repositorio cambiar nombre de rama principal
+git config --global init.defaultBranch <name>
+
+renombrar una rama
+git branch -m master main
+
+ rama en la que encuentra, información de commits
+git status
+
+para agregar los archivos para hacer commit -> subirlos al stage
+git add .
+git add nombre-del-archivo
+
+para remover un archivo del stage -> después de hacer el git add  <nomre arch>
+git reset nombre-del-archivo
+
+
+git commit --message ""
+git commit -m "Primer commit"
+
+
+
+==============================================================
+
+DIFERENTES FORMAS DE AÑADIR AL STAGE
+comodin agrega al stage todos los archivos html
+git add *.html 
+git reset *.js
+
+agregar archivos por extensión en una carpeta 
+git add carpeta/*.js
+
+agregar al stage todo lo que hay dentro de una carpeta
+git add nombre-carpeta/
+
+===============================================================
+
+
+
+para agregar al stage y hacer el commit en un solo paso solo funciona si ya se le hace seguimiento al archivo
+git commit -am "Readme actualizado"
+
+muestra el has de los commit identificador único
+muestra el autor de los commit
+muestra la fecha de los commit
+git log
+
+muestra el has corto
+muestra el nombre del commit
+git log --oneline
+
+reconstruir proyecto a como estaba el ultimo commit
+git checkout -- .
+
+
+
+===============================================================
+CREAR ALIAS
+
+en muchos comandos de git se puede añadir banderas o modificadores ej git status --short manera corta es creando un alias
+
+después del alias. es el comando para llamar el comando
+git config --global alias.s "status --short"
+
+para modificar el alias   
+git config --global -e
+
+alias de LOG
+git config --global alias.lg "log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --all"
+
+===============================================================
+
+VER MODIFICACIONES EN ARCHIVOS 
+
+difícil de leer casi no se usa
+
+cambios que bno están en el staged
+git diff
+
+cambios een el staged
+git diff --staged
+
+===============================================================
+
+MODIFICAR TITULOS DE COMMITS
+
+para el último commit
+git commit --amend -m ""
+
+si agrego así entro en modo edición 
+git commit --amend
+
+===============================================================
+
+UNIR UN COMMIT CON OTRO
+
+por ejemplo cuando hago unos cambios y hago commit y luego hago mas cambios en el mismo archivo y luego hago commit otra vez
+git reset --soft HEAD^
+después de esta instrucción ver status y se puede hacer commit otra vez
+
+el --soft para que mantenga cambios y no sea destructivo
+el HEAD apunta al ultimo commit 
+
+este signo ^ apunta al ultimo commit antes del HEAD
+y si se pone HEAD^2  es el anterior y así sucesivamente
+
+===============================================================
+
+VIAJES EN EL TIEMPO
+VER PROYECTO EN DIFERENTES PARTES DEL TIEMPO
+
+* 9e71ce4 - (2 seconds ago) Heroes.md:  Agregamos a Linterna Verde - amartinezplm (HEAD -> main)
+* 6010cf6 - (6 minutes ago) Agregamos la historia de Batman y Superman - amartinezplm
+* 9039a71 - (8 minutes ago) Agregamos ciudades.md - amartinezplm
+* 2c837d6 - (9 minutes ago) Agregamos heroes.md - amartinezplm
+* 66f3cf5 - (9 minutes ago) Agregamos misiones.md - amartinezplm
+* 90e1190 - (13 minutes ago) Readme agregado - amartinezplm
+
+git reset --soft 6010cf6
+con este comando estoy llendo al commit 2, ósea al anterior al ultimo
+
+git add .
+git commit -m "Heroes.md: Linterna Verde y Robin"  
+
+* 258e74f - (10 seconds ago) Heroes.md: Linterna Verde y Robin - amartinezplm (HEAD -> main)
+* 6010cf6 - (12 minutes ago) Agregamos la historia de Batman y Superman - amartinezplm
+* 9039a71 - (15 minutes ago) Agregamos ciudades.md - amartinezplm
+* 2c837d6 - (15 minutes ago) Agregamos heroes.md - amartinezplm
+* 66f3cf5 - (15 minutes ago) Agregamos misiones.md - amartinezplm
+* 90e1190 - (19 minutes ago) Readme agregado - amartinezplm
+
+--mixed saca todo del stage y quedan listos para volverlos a añadir
+deshace los commits hechos después del ese commit de ese has 9039a71
+git reset --mixed 9039a71
+
+destructivo
+deja el repositorio como estaba en ese puto
+git reset --hard 9039a71
+git reset --hard HEAD^   el commit anterior al HEAD
+
+sin nada después del --hard es parecido al
+git reset --hard      git checkout -- .
+
+======================================================================
+
+REFERENCIA DEL HISTORIAL EN GIT
+sirve para recuperar 
+git reflog
+
+66f3cf5 (HEAD -> main) HEAD@{0}: reset: moving to HEAD^
+2c837d6 HEAD@{1}: reset: moving to 2c837d6
+9039a71 HEAD@{2}: reset: moving to 9039a71
+9039a71 HEAD@{3}: reset: moving to 9039a71
+258e74f HEAD@{4}: commit: Heroes.md: Linterna Verde y Robin
+6010cf6 HEAD@{5}: reset: moving to 6010cf6
+9e71ce4 HEAD@{6}: commit: Heroes.md: Agregamos a Linterna Verde
+6010cf6 HEAD@{7}: commit (amend): Agregamos la historia de Batman y Superman
+efe3ea4 HEAD@{8}: commit: Agregamos la carpeta historia
+9039a71 HEAD@{9}: commit: Agregamos ciudades.md
+2c837d6 HEAD@{10}: commit: Agregamos heroes.md
+66f3cf5 (HEAD -> main) HEAD@{11}: commit: Agregamos misiones.md
+90e1190 HEAD@{12}: commit (initial): Readme agregado
+
+este comando deja el proyecto en el punto que queramos en este caso en  Heroes.md: Linterna Verde y Robi por el has
+git reset --hard 258e74f
+
+======================================================================
+
+MOVER UN ARCHIVO 
+
+de posición y por hay derecho se cambia el nombre
+git mv destruir-mundo.md salvar-mundo.md
+
+======================================================================
+
+ELIMINAR UN ARCHIVO
+
+queda el historial
+git rm salvar-mundo.md
+
+hay que hacer commit para que quede eliminado del stage
